@@ -24,20 +24,15 @@ def save_eps(filename="Q3_star.eps"):
         print("Could not save:", e)
 
 def main():
-    # Optional: let you scale the star bigger/smaller
     try:
         scale = float(input("Scale (1 = original SVG size): ").strip())
     except:
         scale = 1.0
-
     draw_polygon(POINTS, scale)
-
-    # keyboard shortcuts
     scr = T.getscreen()
     scr.onkey(lambda: save_eps("Q3_star.eps"), "s")
     scr.onkey(T.bye, "q")
     scr.listen()
-
     print("Press 'S' to save as EPS, 'Q' to quit.")
     T.done()
 
