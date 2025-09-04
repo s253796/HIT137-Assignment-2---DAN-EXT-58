@@ -5,12 +5,15 @@
 # MEL HA - s253796
 with open("raw_text.txt", "r") as file:
     text= file.read ()
-
+# User input for variables is obtained.
 shift1 = int(input("Enter shift1 value: "))
 shift2 = int(input("Enter shift2 value: "))
 encrypted_text =  ""
 encryption_flags = []
+# Flags are used because while encryption will work smoothly, decryption may have overlapping possible values making it inaccurate.
 
+# Text is encrypted based on which characters are used; whichever encryption method was used is recorded (flagged) at each character position (index).
+# Wrap around calculations are used for when characters go past z or before a.
 for ch in text:
     ordvalue = ord(ch)
     if ch >= 'a' and ch <= 'm': 
@@ -18,7 +21,7 @@ for ch in text:
         if ciphervalue > ord('z'):
             x = ciphervalue - ord('z') - 1
             ciphervalue = ord('a') + (x % 26)
-        encryption_flags.append('a-m')
+        encryption_flags.append('a-m')       
     elif ch >= 'n' and ch <= 'z':
         ciphervalue = ordvalue - (shift1+shift2)
         if ciphervalue < ord('a'):
@@ -50,11 +53,11 @@ with open("encrypted_text.txt", "r") as file:
     text= file.read ()
 
 decrypted_text =  ""
-
+# Enumerate used to identify the index and determine what encryption flag was used for each character.
 for i, ch in enumerate (text):
     ordvalue = ord(ch)
     flag = encryption_flags [i]
-
+    # Text decrypted using stored flags to reverse encryption shifts.
     if flag == 'a-m':
         ciphervalue = ordvalue - shift1*shift2
         if ciphervalue < ord('a'):
@@ -82,7 +85,7 @@ for i, ch in enumerate (text):
 
 with open("decrypted_text.txt", "w") as file:
     file.write(decrypted_text)
-
+# Raw text compared directly to decrypted text to verify encryption to decryption was successful.
 with open("raw_text.txt", "r") as raw:
     raw_text = raw.read ()
 with open("decrypted_text.txt", "r") as decrypted:
